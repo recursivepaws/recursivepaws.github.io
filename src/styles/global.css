@@ -209,6 +209,31 @@
   box-shadow: none;
 }
 
+/* one media height for gallery slides and card previews, so carousels don't
+   size to their tallest slide */
+:root {
+  --media-h: min(55vh, 28rem);
+}
+[data-slot="carousel-item"] img,
+[data-slot="card"] img:not([data-slot="badge"] img) {
+  width: 100%;
+  max-height: var(--media-h);
+  object-fit: contain;
+}
+[data-slot="carousel-item"] img {
+  height: var(--media-h);
+}
+[data-slot="carousel-content"] > div {
+  align-items: center;
+}
+/* slides sit on the page background; a frame around a letterboxed image reads as empty space */
+[data-slot="carousel-item"] [data-slot="card"],
+[data-slot="carousel-item"] [data-slot="card-content"] {
+  border: 0;
+  padding: 0;
+  background: none;
+}
+
 /* shadcn hangs the arrows outside the slide, which overflows narrow screens */
 @media (max-width: 767px) {
   [data-slot="carousel-previous"] {

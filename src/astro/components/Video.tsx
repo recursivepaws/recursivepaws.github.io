@@ -1,12 +1,14 @@
 import type { Video as SanityVideo } from "../utils/sanity";
 
 export function Video({ video }: { video: SanityVideo }) {
-  const padding = Math.round((video.height / video.width) * 10000) / 100;
+  const ratio = video.width / video.height;
   return (
     <div
-      className="w-full"
+      className="relative mx-auto"
+      // full width, but never taller than --media-h (keeps portrait videos sane)
       style={{
-        paddingTop: `${padding}%`,
+        aspectRatio: `${video.width} / ${video.height}`,
+        width: `min(100%, calc(var(--media-h) * ${ratio}))`,
       }}
     >
       <iframe
