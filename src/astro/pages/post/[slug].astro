@@ -26,7 +26,8 @@ const md = new Marked().use(
 const htmlContent = md.parse(post.body ?? "");
 
 // "…?dl=Name.pdf" links get their file name, anything else its hostname
-const links = (post.links ?? []).map((href) => {
+// Studio lets empty/invalid entries through (two posts have ""), so skip them
+const links = (post.links ?? []).filter((href) => URL.canParse(href)).map((href) => {
   const url = new URL(href);
   const file = url.searchParams.get("dl");
   return { href, label: file ? `Download ${file}` : url.hostname };
