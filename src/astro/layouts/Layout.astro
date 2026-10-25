@@ -4,15 +4,20 @@ import { ClientRouter } from "astro:transitions";
 import { VisualEditing } from "@sanity/astro/visual-editing";
 import SpeedInsights from "@vercel/speed-insights/astro";
 import Analytics from "@vercel/analytics/astro";
+import Sidebar from "../components/Sidebar.astro";
+import { getNavCategories } from "../utils/sanity";
 
 const visualEditingEnabled =
   import.meta.env.PUBLIC_SANITY_VISUAL_EDITING_ENABLED == "true";
 
 interface Props {
   title: string;
+  current?: string;
+  tagged?: string[];
 }
 
-const { title } = Astro.props;
+const { title, current, tagged } = Astro.props;
+const categories = await getNavCategories();
 ---
 
 <html lang="en" class="dark">
@@ -28,91 +33,121 @@ const { title } = Astro.props;
     <SpeedInsights />
   </head>
   <body>
-    <div class="container">
-      <header class="header">
-        <a class="header__title" href="/">recursivepaws.dev</a>
-      </header>
-      <main class="flex flex-col gap-6">
-        <slot />
-        <VisualEditing enabled={visualEditingEnabled} zIndex={1000} />
-      </main>
-      <footer class="footer">
-        <p class="footer__text">Made by Vera</p>
-      </footer>
+    <div class="shell">
+      <Sidebar categories={categories} current={current} tagged={tagged} />
+      <div class="column">
+        <header class="mobile-bar">
+          <a class="mobile-bar__title" href="/">vera.lgbt</a>
+          <button
+            class="mobile-bar__toggle"
+            popovertarget="sidebar"
+            aria-label="Open navigation"
+          >
+            <svg
+              xmlns="http://www.w3.org/2000/svg"
+              width="22"
+              height="22"
+              viewBox="0 0 24 24"
+              fill="none"
+              stroke="currentColor"
+              stroke-width="1.5"
+              stroke-linecap="round"
+              aria-hidden="true"
+            >
+              <line x1="4" y1="7" x2="20" y2="7"></line>
+              <line x1="4" y1="12" x2="20" y2="12"></line>
+              <line x1="4" y1="17" x2="20" y2="17"></line>
+            </svg>
+          </button>
+        </header>
+        <main class="flex flex-col gap-6">
+          <slot />
+          <VisualEditing enabled={visualEditingEnabled} zIndex={1000} />
+        </main>
+        <footer class="footer">Made by Vera</footer>
+      </div>
     </div>
+    <script>
+      // the drawer would otherwise stay open across client-side navigation
+      document.addEventListener("astro:after-swap", () =>
+        document.getElementById("sidebar")?.hidePopover?.(),
+      );
+    </script>
   </body>
 </html>
 
 <style>
-  .container {
+  .column {
+    width: 100%;
+    max-width: 42rem;
+    padding: 0 1rem;
     margin: 0 auto;
+    min-height: 100dvh;
+    display: flex;
+    flex-direction: column;
   }
 
   main {
-    margin-top: 45px;
+    flex: 1;
+    padding: 1.5rem 0 4rem;
   }
 
-  .header {
-    display: flex;
-    padding: 0 var(--space-1);
-    border-bottom: 1px solid var(--border);
-
-    z-index: 10;
-    background: var(--background);
-    position: fixed;
-    left: 0;
-    right: 0;
+  .mobile-bar {
+    position: sticky;
     top: 0;
+    z-index: 10;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin: 0 -1rem;
+    padding: 0.75rem 1rem;
+    background: var(--background);
+    border-bottom: 1px solid var(--border);
+  }
 
-    & .header__title {
-      font-weight: 700;
-      font-size: var(--font-size-3);
-      line-height: var(--line-height-1);
-      padding-left: var(--space-2);
-      margin: var(--space-3) 0;
-      text-decoration: none;
-    }
+  .mobile-bar__title {
+    font-weight: 600;
+    color: var(--heading);
+    text-decoration: none;
+  }
+
+  .mobile-bar__toggle {
+    display: grid;
+    place-items: center;
+    width: 2.75rem;
+    height: 2.75rem;
+    margin-right: -0.5rem;
+    border-radius: 0.25rem;
+    color: var(--foreground);
+    cursor: pointer;
+  }
+  .mobile-bar__toggle:hover {
+    color: var(--heading);
+    background: var(--accent);
   }
 
   .footer {
-    display: flex;
-    justify-content: flex-end;
-    padding: 0 var(--space-3);
-
-    & .footer__text {
-      font-size: var(--font-size-1);
-      line-height: var(--line-height-1);
-      display: flex;
-      align-items: center;
-      gap: 2px;
-    }
+    padding: 1.5rem 0;
+    font-size: 0.875rem;
+    color: var(--muted-foreground);
   }
 
-  @media (min-width: 575px) {
-    .container {
-      max-width: var(--max-width-1);
-      padding: 0 var(--space-4);
+  @media (min-width: 768px) {
+    .shell {
+      display: grid;
+      grid-template-columns: 15rem 1fr;
+    }
+
+    .column {
+      padding: 0 2rem;
+    }
+
+    .mobile-bar {
+      display: none;
     }
 
     main {
-      margin-top: unset;
-    }
-
-    .header {
-      position: unset;
-      border-bottom: none;
-      margin: var(--space-3) 0;
-      padding: var(--space-2) 0;
-      background: unset;
-
-      & .header__title {
-        margin: var(--space-3) 0 var(--space-2);
-        font-size: var(--font-size-5);
-      }
-    }
-
-    .footer {
-      margin: var(--space-3) 0;
+      padding-top: 4rem;
     }
   }
 </style>
@@ -168,7 +203,7 @@ const { title } = Astro.props;
     --magenta-100: #f9d7eb;
 
     --max-width-0: 320px;
-    --max-width-1: 768px;
+
   }
 
   html {

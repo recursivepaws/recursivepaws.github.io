@@ -16,6 +16,7 @@ export default defineType({
     common.title,
     common.slug,
     common.nsfw,
+    common.featured,
     common.tags,
     common.links,
     common.icon,
@@ -37,5 +38,6 @@ export default defineType({
   },
   initialValue: {
     nsfw: false,
+    featured: false,
   },
 });

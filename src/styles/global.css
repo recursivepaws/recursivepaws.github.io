@@ -187,52 +187,9 @@
 [data-slot="card-title"] {
   color: var(--heading);
 }
-/* mono is wider than Inter: let badges wrap instead of crushing the title */
-[data-slot="card-action"] {
-  max-width: 50%;
-  flex-wrap: wrap;
-  justify-content: flex-end;
-}
 [data-slot="card-title"] a {
   text-decoration: none;
 }
-
-[data-slot="tabs-list"] {
-  background: none;
-  padding: 0;
-  height: auto;
-  flex-wrap: wrap;
-  justify-content: flex-start;
-  gap: 0.25rem 0;
-}
-[data-slot="tabs-trigger"] {
-  display: inline;
-  flex: none;
-  height: auto;
-  padding: 0;
-  border: 0;
-  background: none;
-  box-shadow: none;
-  font-weight: 300;
-  color: var(--muted-foreground);
-  text-decoration: underline;
-  text-underline-offset: 2px;
-  text-decoration-color: color-mix(in srgb, currentColor 30%, transparent);
-  transition: color 0.3s ease-in-out;
-}
-[data-slot="tabs-trigger"]:hover,
-[data-slot="tabs-trigger"][data-state="active"] {
-  color: var(--heading);
-  text-decoration-color: currentColor;
-}
-/* inline-block keeps the trigger's underline off the separator */
-[data-slot="tabs-trigger"] + [data-slot="tabs-trigger"]::before {
-  content: "/";
-  display: inline-block;
-  margin: 0 0.5rem;
-  color: var(--foreground);
-}
-
 [data-slot="badge"] {
   background: transparent;
   border-color: var(--border);
@@ -250,5 +207,15 @@
 
 [data-slot="button"] {
   box-shadow: none;
+}
+
+/* shadcn hangs the arrows outside the slide, which overflows narrow screens */
+@media (max-width: 767px) {
+  [data-slot="carousel-previous"] {
+    left: 0.5rem;
+  }
+  [data-slot="carousel-next"] {
+    right: 0.5rem;
+  }
 }
 

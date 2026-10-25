@@ -49,22 +49,40 @@ export async function getReference<T>({
   return data;
 }
 
-export async function getPostsWithTag<T>({
-  tag,
-}: {
-  tag: string;
-  // refs: string[];
-}): Promise<T[]> {
-  const { data } = await loadQuery<T[] | null>({
-    query: `*[_type == "post" && references($tag) in tags[]._ref ]`,
-    params: { tag },
+export async function getPostsInCategory(id: string): Promise<Post[]> {
+  const { data } = await loadQuery<Post[]>({
+    query: `*[_type == "post" && defined(slug.current) && references($id)] | order(date desc)`,
+    params: { id },
   });
-
-  if (!data) {
-    throw new Error(`Document not found: posts with tag ${tag}`);
-  }
-
   return data;
+}
+
+export async function getCategory(slug: string): Promise<Category | null> {
+  const { data } = await loadQuery<Category | null>({
+    query: `*[_type == "category" && slug.current == $slug][0]`,
+    params: { slug },
+  });
+  return data;
+}
+
+// Sidebar list: only categories that have posts.
+export async function getNavCategories(): Promise<Category[]> {
+  const { data } = await loadQuery<Category[]>({
+    query: `*[_type == "category" && defined(slug.current) && count(*[_type == "post" && references(^._id)]) > 0] | order(title asc)`,
+  });
+  return data;
+}
+
+// Falls back to the newest posts until something is marked featured.
+export async function getHighlights(): Promise<Post[]> {
+  const { data } = await loadQuery<Post[]>({
+    query: `*[_type == "post" && defined(slug.current) && featured == true] | order(date desc)`,
+  });
+  if (data.length) return data;
+  const { data: newest } = await loadQuery<Post[]>({
+    query: `*[_type == "post" && defined(slug.current)] | order(date desc)[0...3]`,
+  });
+  return newest;
 }
 
 export type Category = {
@@ -108,6 +126,7 @@ export interface Post {
   _createdAt: string;
   tags: Reference[];
   icon?: Icon;
+  featured?: boolean;
   gallery?: Gallery;
   date: string;
   title?: string;

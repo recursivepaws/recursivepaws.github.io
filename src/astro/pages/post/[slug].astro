@@ -22,7 +22,7 @@ const post = await getPost(slug);
 const htmlContent = marked.parse(post.body ?? "");
 ---
 
-<Layout title={post.title!}>
+<Layout title={post.title!} tagged={post.tags?.map((t) => t._ref)}>
   <section class="post">
     <div class="post__container">
       <h1 class="post__title">{post.title}</h1>

@@ -1,11 +1,33 @@
 ---
-import { CategoryTabs } from "../components/CategoryTabs";
+import { Card } from "../components/Card";
 import Layout from "../layouts/Layout.astro";
-import { getPosts, getCategories } from "../utils/sanity";
-const posts = await getPosts();
-const categories = await getCategories();
+import { getHighlights, getNavCategories } from "../utils/sanity";
+
+const [highlights, categories] = await Promise.all([
+  getHighlights(),
+  getNavCategories(),
+]);
 ---
 
-<Layout title="Welcome to Astro.">
-  <CategoryTabs posts={posts} categories={categories} client:load />
+<Layout title="vera.lgbt">
+  <section class="flex flex-col gap-2">
+    <h1 class="text-2xl">Hey there, I'm Vera. [ 󰄛 󰊟 ]</h1>
+    <p>
+      I love to create, to solve challenging problems, and to blend and overlap
+      my interests with one another.
+    </p>
+  </section>
+
+  <section class="flex flex-col gap-6 mt-10">
+    <h2 class="text-xl">Highlights</h2>
+    <ul class="flex flex-col gap-6">
+      {
+        highlights.map((post) => (
+          <li>
+            <Card post={post} categories={categories} />
+          </li>
+        ))
+      }
+    </ul>
+  </section>
 </Layout>

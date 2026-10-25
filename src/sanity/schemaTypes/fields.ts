@@ -9,6 +9,7 @@ export enum Common {
   icon = "icon",
   links = "links",
   nsfw = "nsfw",
+  featured = "featured",
   body = "body",
   preview = "preview",
   tags = "tags",
@@ -42,6 +43,12 @@ export const common: Record<Common, FieldDefinition> = {
     type: "boolean",
     options: { layout: "checkbox" },
     validation: (rule) => rule.required(),
+  }),
+  featured: defineField({
+    name: "featured",
+    title: "Highlight on home page",
+    type: "boolean",
+    options: { layout: "checkbox" },
   }),
   photo: defineField({
     name: "photo",
