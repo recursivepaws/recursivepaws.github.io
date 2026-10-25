@@ -1,0 +1,13 @@
+---
+import type { Gallery } from "../utils/sanity";
+import { GalleryItem } from "./GalleryItem";
+
+interface Props {
+  gallery: Gallery;
+}
+
+const { gallery } = Astro.props;
+---
+<section class="flex flex-col gap-6">
+  {gallery.map((item) => <GalleryItem item={item} client:visible />)}
+</section>

@@ -1,0 +1,37 @@
+---
+import { Card } from "../../components/Card";
+import Layout from "../../layouts/Layout.astro";
+import {
+  getCategory,
+  getNavCategories,
+  getPostsInCategory,
+} from "../../utils/sanity";
+
+const { slug } = Astro.params;
+const category = slug ? await getCategory(slug) : null;
+if (!category) {
+  return new Response(null, { status: 404, statusText: "Not found" });
+}
+
+const [posts, categories] = await Promise.all([
+  getPostsInCategory(category._id),
+  getNavCategories(),
+]);
+---
+
+<Layout title={`${category.title} | vera.lgbt`} current={category.slug.current}>
+  <h1 class="text-2xl">{category.title}</h1>
+  {
+    posts.length ? (
+      <ul class="flex flex-col gap-6">
+        {posts.map((post) => (
+          <li>
+            <Card post={post} categories={categories} />
+          </li>
+        ))}
+      </ul>
+    ) : (
+      <p>Nothing here yet.</p>
+    )
+  }
+</Layout>

@@ -1,0 +1,90 @@
+---
+import type { InferGetStaticParamsType } from "astro";
+import Layout from "../../layouts/Layout.astro";
+import { formatDate } from "../../utils";
+import { getPost, getPosts } from "../../utils/sanity";
+import { Marked } from "marked";
+import markedFootnote from "marked-footnote";
+import { Gallery } from "../../components/Gallery";
+import { LinkButtons } from "../../components/LinkButtons";
+
+export async function getStaticPaths() {
+  const posts = await getPosts();
+  return posts.map((post) => ({
+    params: { slug: post.slug.current },
+  }));
+}
+
+type Params = InferGetStaticParamsType<typeof getStaticPaths>;
+const { slug } = Astro.params as Params;
+
+const post = await getPost(slug);
+
+// Own instance so the footnote extension doesn't leak into the global `marked`
+const md = new Marked().use(
+  markedFootnote({ description: "Sources", headingClass: "" }),
+);
+const htmlContent = md.parse(post.body ?? "");
+---
+
+<Layout
+  title={`${post.title} | vera.lgbt`}
+  description={post.excerpt}
+  tagged={post.tags?.map((t) => t._ref)}
+>
+  <article class="post">
+    <header>
+      <h1 class="post__title">{post.title}</h1>
+      {post.excerpt && <p class="post__excerpt">{post.excerpt}</p>}
+      <p class="post__date">{formatDate(post.date)}</p>
+    </header>
+    {
+      post.gallery && (
+        <div class="post__media">
+          <Gallery gallery={post.gallery} client:load />
+        </div>
+      )
+    }
+    <LinkButtons links={post.links ?? []} />
+    <div class="post__body prose" set:html={htmlContent} />
+  </article>
+
+  <style>
+    .post {
+      display: flex;
+      flex-direction: column;
+      gap: 2rem;
+    }
+
+    .post__title {
+      font-size: 2rem;
+      line-height: 1.15;
+      font-weight: 700;
+      letter-spacing: -0.02em;
+    }
+
+    .post__excerpt {
+      margin-top: 0.75rem;
+      font-size: 1.125rem;
+      color: var(--muted-foreground);
+    }
+
+    .post__date {
+      margin-top: 0.5rem;
+      font-size: 0.875rem;
+      color: var(--muted-foreground);
+    }
+
+    .post__media :global(img) {
+      width: 100%;
+      max-height: var(--media-h);
+      object-fit: contain;
+    }
+
+    @media (min-width: 768px) {
+      .post__title {
+        font-size: 2.75rem;
+      }
+    }
+  </style>
+</Layout>

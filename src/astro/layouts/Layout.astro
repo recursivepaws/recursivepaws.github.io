@@ -1,0 +1,219 @@
+---
+import "../../styles/global.css";
+import { ClientRouter } from "astro:transitions";
+import { VisualEditing } from "@sanity/astro/visual-editing";
+import SpeedInsights from "@vercel/speed-insights/astro";
+import Analytics from "@vercel/analytics/astro";
+import Sidebar from "../components/Sidebar.astro";
+import { getNavCategories } from "../utils/sanity";
+
+const visualEditingEnabled =
+  import.meta.env.PUBLIC_SANITY_VISUAL_EDITING_ENABLED == "true";
+
+interface Props {
+  title: string;
+  description?: string;
+  current?: string;
+  tagged?: string[];
+}
+
+const { title, description, current, tagged } = Astro.props;
+const categories = await getNavCategories();
+---
+
+<html lang="en" class="dark">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width" />
+    <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+    <meta name="generator" content={Astro.generator} />
+
+    <title>{title}</title>
+    {description && <meta name="description" content={description} />}
+    <ClientRouter />
+    <Analytics />
+    <SpeedInsights />
+  </head>
+  <body>
+    <div class="shell">
+      <Sidebar categories={categories} current={current} tagged={tagged} />
+      <div class="column">
+        <header class="mobile-bar">
+          <a class="mobile-bar__title" href="/">vera.lgbt</a>
+          <button
+            class="mobile-bar__toggle"
+            popovertarget="sidebar"
+            aria-label="Open navigation"
+          >
+            <svg
+              xmlns="http://www.w3.org/2000/svg"
+              width="22"
+              height="22"
+              viewBox="0 0 24 24"
+              fill="none"
+              stroke="currentColor"
+              stroke-width="1.5"
+              stroke-linecap="round"
+              aria-hidden="true"
+            >
+              <line x1="4" y1="7" x2="20" y2="7"></line>
+              <line x1="4" y1="12" x2="20" y2="12"></line>
+              <line x1="4" y1="17" x2="20" y2="17"></line>
+            </svg>
+          </button>
+        </header>
+        <main class="flex flex-col gap-6">
+          <slot />
+          <VisualEditing enabled={visualEditingEnabled} zIndex={1000} />
+        </main>
+        <footer class="footer">Made by Vera</footer>
+      </div>
+    </div>
+    <script>
+      // the drawer would otherwise stay open across client-side navigation
+      document.addEventListener("astro:after-swap", () =>
+        document.getElementById("sidebar")?.hidePopover?.(),
+      );
+    </script>
+  </body>
+</html>
+
+<style>
+  .column {
+    width: 100%;
+    max-width: 42rem;
+    padding: 0 1rem;
+    margin: 0 auto;
+    min-height: 100dvh;
+    display: flex;
+    flex-direction: column;
+  }
+
+  main {
+    flex: 1;
+    padding: 1.5rem 0 4rem;
+  }
+
+  .mobile-bar {
+    position: sticky;
+    top: 0;
+    z-index: 10;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin: 0 -1rem;
+    padding: 0.75rem 1rem;
+    background: var(--background);
+    border-bottom: 1px solid var(--border);
+  }
+
+  .mobile-bar__title {
+    font-weight: 600;
+    color: var(--heading);
+    text-decoration: none;
+  }
+
+  .mobile-bar__toggle {
+    display: grid;
+    place-items: center;
+    width: 2.75rem;
+    height: 2.75rem;
+    margin-right: -0.5rem;
+    border-radius: 0.25rem;
+    color: var(--foreground);
+    cursor: pointer;
+  }
+  .mobile-bar__toggle:hover {
+    color: var(--heading);
+    background: var(--accent);
+  }
+
+  .footer {
+    padding: 1.5rem 0;
+    font-size: 0.875rem;
+    color: var(--muted-foreground);
+  }
+
+  @media (min-width: 768px) {
+    .shell {
+      display: grid;
+      grid-template-columns: 15rem 1fr;
+    }
+
+    .column {
+      padding: 0 2rem;
+    }
+
+    .mobile-bar {
+      display: none;
+    }
+
+    main {
+      padding-top: 4rem;
+    }
+  }
+</style>
+
+<style is:global>
+  :root {
+    --space-0: 0;
+    --space-1: 4px;
+    --space-2: 8px;
+    --space-3: 12px;
+    --space-4: 20px;
+    --space-5: 32px;
+    --space-6: 52px;
+    --space-7: 84px;
+    --space-8: 136px;
+    --space-9: 220px;
+
+    --font-family-sans: "FiraCode";
+    --font-family-serif: "FiraCode";
+    --font-family-mono: "FiraCode";
+
+    --font-size-0: 12px;
+    --font-size-1: 14px;
+    --font-size-2: 16px;
+    --font-size-3: 18px;
+    --font-size-4: 20px;
+    --font-size-5: 24px;
+    --font-size-6: 30px;
+    --font-size-7: 36px;
+    --font-size-8: 48px;
+    --font-size-9: 60px;
+    --font-size-10: 72px;
+
+    --line-height-0: 16px;
+    --line-height-1: 20px;
+    --line-height-2: 24px;
+    --line-height-3: 28px;
+    --line-height-4: 28px;
+    --line-height-5: 32px;
+    --line-height-6: 36px;
+    --line-height-7: 40px;
+    --line-height-8: 48px;
+    --line-height-9: 60px;
+    --line-height-10: 72px;
+    --line-height-11: 96px;
+    --line-height-12: 128px;
+
+    --white: #fff;
+    --black: #101112;
+    --gray-200: #ced2d9;
+    --gray-600: #6e7683;
+    --blue-600: #1e61cd;
+    --magenta-100: #f9d7eb;
+
+    --max-width-0: 320px;
+
+  }
+
+  html {
+    font-family: var(--font-family-sans), var(--font-family-serif), sans-serif;
+    text-size-adjust: 100%;
+  }
+
+  body {
+    margin: 0;
+  }
+</style>

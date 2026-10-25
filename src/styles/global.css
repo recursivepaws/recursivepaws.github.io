@@ -1,150 +1,378 @@
-@tailwind base;
-@tailwind components;
-@tailwind utilities;
+@import "tailwindcss";
+@import "tw-animate-css";
 
-table {
-	margin: 10px;
-	border-collapse: collapse;
-	border-radius: 4px;
-	border-width: 2px;
-}
-
-.table-container {
-	overflow-x: scroll;
-}
-
-td,
-th {
-	border: 4px solid;
-	padding: 4px;
-}
-
-tbody,
-tr,
-th:only-of-type {
-	vertical-align: middle;
-}
-
-tbody,
-tr,
-th {
-	vertical-align: top;
-}
-
-thead,
-th {
-	text-align: left;
-}
-
-.astro-code {
-	@apply rounded px-4 py-2;
-}
+@custom-variant dark (&:is(.dark *));
 
 @font-face {
-	font-family: 'FiraCode';
-	src: url('/fonts/FiraCodeNerdFont-Retina.ttf') format('truetype');
-	font-weight: regular;
-	font-style: normal;
-	font-display: auto;
+  font-family: "FiraCode";
+  src: url("/fonts/FiraCodeNerdFont-Light.ttf") format("truetype");
+  font-weight: 300;
+  font-display: swap;
 }
-
 @font-face {
-	font-family: 'FiraCode';
-	src: url('/fonts/FiraCodeNerdFont-Bold.ttf') format('truetype');
-	font-weight: bolder;
-	font-style: normal;
-	font-display: auto;
+  font-family: "FiraCode";
+  src: url("/fonts/FiraCodeNerdFont-Retina.ttf") format("truetype");
+  font-weight: 400;
+  font-display: swap;
 }
-
 @font-face {
-	font-family: 'FiraCode';
-	src: url('/fonts/FiraCodeNerdFont-SemiBold.ttf') format('truetype');
-	font-weight: bold;
-	font-style: normal;
-	font-display: auto;
+  font-family: "FiraCode";
+  src: url("/fonts/FiraCodeNerdFont-Medium.ttf") format("truetype");
+  font-weight: 500;
+  font-display: swap;
 }
-
 @font-face {
-	font-family: 'FiraCode';
-	src: url('/fonts/FiraCodeNerdFont-Light.ttf') format('truetype');
-	font-weight: lighter;
-	font-style: normal;
-	font-display: auto;
+  font-family: "FiraCode";
+  src: url("/fonts/FiraCodeNerdFont-SemiBold.ttf") format("truetype");
+  font-weight: 600;
+  font-display: swap;
+}
+@font-face {
+  font-family: "FiraCode";
+  src: url("/fonts/FiraCodeNerdFont-Bold.ttf") format("truetype");
+  font-weight: 700;
+  font-display: swap;
 }
 
-* {
-	font-family: 'FiraCode';
+@theme inline {
+  --font-sans: "FiraCode", ui-monospace, monospace;
+  --font-mono: "FiraCode", ui-monospace, monospace;
+  --color-heading: var(--heading);
+  --radius-sm: calc(var(--radius) - 4px);
+  --radius-md: calc(var(--radius) - 2px);
+  --radius-lg: var(--radius);
+  --radius-xl: calc(var(--radius) + 4px);
+  --color-background: var(--background);
+  --color-foreground: var(--foreground);
+  --color-card: var(--card);
+  --color-card-foreground: var(--card-foreground);
+  --color-popover: var(--popover);
+  --color-popover-foreground: var(--popover-foreground);
+  --color-primary: var(--primary);
+  --color-primary-foreground: var(--primary-foreground);
+  --color-secondary: var(--secondary);
+  --color-secondary-foreground: var(--secondary-foreground);
+  --color-muted: var(--muted);
+  --color-muted-foreground: var(--muted-foreground);
+  --color-accent: var(--accent);
+  --color-accent-foreground: var(--accent-foreground);
+  --color-destructive: var(--destructive);
+  --color-border: var(--border);
+  --color-input: var(--input);
+  --color-ring: var(--ring);
+  --color-chart-1: var(--chart-1);
+  --color-chart-2: var(--chart-2);
+  --color-chart-3: var(--chart-3);
+  --color-chart-4: var(--chart-4);
+  --color-chart-5: var(--chart-5);
+  --color-sidebar: var(--sidebar);
+  --color-sidebar-foreground: var(--sidebar-foreground);
+  --color-sidebar-primary: var(--sidebar-primary);
+  --color-sidebar-primary-foreground: var(--sidebar-primary-foreground);
+  --color-sidebar-accent: var(--sidebar-accent);
+  --color-sidebar-accent-foreground: var(--sidebar-accent-foreground);
+  --color-sidebar-border: var(--sidebar-border);
+  --color-sidebar-ring: var(--sidebar-ring);
 }
 
-html {
-	overflow-y: scroll;
-	color-scheme: light;
+:root {
+  --radius: 0.5rem;
+  --background: #f5f5f4;
+  --foreground: rgb(0 0 0 / 0.6);
+  --heading: #000;
+  --card: transparent;
+  --card-foreground: rgb(0 0 0 / 0.6);
+  --popover: #f5f5f4;
+  --popover-foreground: rgb(0 0 0 / 0.6);
+  --primary: #000;
+  --primary-foreground: #f5f5f4;
+  --secondary: rgb(0 0 0 / 0.05);
+  --secondary-foreground: #000;
+  --muted: rgb(0 0 0 / 0.05);
+  --muted-foreground: rgb(0 0 0 / 0.55);
+  --accent: rgb(0 0 0 / 0.05);
+  --accent-foreground: #000;
+  --destructive: oklch(0.577 0.245 27.325);
+  --border: rgb(0 0 0 / 0.15);
+  --input: rgb(0 0 0 / 0.15);
+  --ring: rgb(0 0 0 / 0.3);
+  --chart-1: oklch(0.646 0.222 41.116);
+  --chart-2: oklch(0.6 0.118 184.704);
+  --chart-3: oklch(0.398 0.07 227.392);
+  --chart-4: oklch(0.828 0.189 84.429);
+  --chart-5: oklch(0.769 0.188 70.08);
+  --sidebar: oklch(0.985 0 0);
+  --sidebar-foreground: oklch(0.141 0.005 285.823);
+  --sidebar-primary: oklch(0.21 0.006 285.885);
+  --sidebar-primary-foreground: oklch(0.985 0 0);
+  --sidebar-accent: oklch(0.967 0.001 286.375);
+  --sidebar-accent-foreground: oklch(0.21 0.006 285.885);
+  --sidebar-border: oklch(0.92 0.004 286.32);
+  --sidebar-ring: oklch(0.705 0.015 286.067);
 }
 
-html.dark {
-	color-scheme: dark;
+.dark {
+  --background: #1c1917;
+  --foreground: rgb(255 255 255 / 0.75);
+  --heading: #fff;
+  --card: transparent;
+  --card-foreground: rgb(255 255 255 / 0.75);
+  --popover: #1c1917;
+  --popover-foreground: rgb(255 255 255 / 0.75);
+  --primary: #fff;
+  --primary-foreground: #1c1917;
+  --secondary: rgb(255 255 255 / 0.05);
+  --secondary-foreground: #fff;
+  --muted: rgb(255 255 255 / 0.05);
+  --muted-foreground: rgb(255 255 255 / 0.6);
+  --accent: rgb(255 255 255 / 0.05);
+  --accent-foreground: #fff;
+  --destructive: oklch(0.704 0.191 22.216);
+  --border: rgb(255 255 255 / 0.2);
+  --input: rgb(255 255 255 / 0.2);
+  --ring: rgb(255 255 255 / 0.4);
+  --chart-1: oklch(0.488 0.243 264.376);
+  --chart-2: oklch(0.696 0.17 162.48);
+  --chart-3: oklch(0.769 0.188 70.08);
+  --chart-4: oklch(0.627 0.265 303.9);
+  --chart-5: oklch(0.645 0.246 16.439);
+  --sidebar: oklch(0.21 0.006 285.885);
+  --sidebar-foreground: oklch(0.985 0 0);
+  --sidebar-primary: oklch(0.488 0.243 264.376);
+  --sidebar-primary-foreground: oklch(0.985 0 0);
+  --sidebar-accent: oklch(0.274 0.006 286.033);
+  --sidebar-accent-foreground: oklch(0.985 0 0);
+  --sidebar-border: oklch(1 0 0 / 10%);
+  --sidebar-ring: oklch(0.552 0.016 285.938);
 }
 
-html,
-body {
-	@apply size-full;
+@layer base {
+  * {
+    @apply border-border outline-ring/50;
+  }
+  body {
+    @apply bg-background text-foreground font-light antialiased;
+  }
+  h1,
+  h2,
+  h3,
+  h4,
+  h5,
+  h6 {
+    @apply font-semibold text-heading;
+  }
+  a {
+    @apply underline underline-offset-2 decoration-foreground/30 transition-colors duration-300;
+  }
+  a:hover {
+    @apply text-heading decoration-heading/50;
+  }
 }
 
-body {
-	@apply font-sans antialiased;
-	@apply flex flex-col;
-	@apply bg-stone-100 dark:bg-stone-900;
-	@apply text-black/50 dark:text-white/75;
+/* Long-form text (rendered markdown). Restores what Tailwind's preflight strips. */
+@layer components {
+  .prose {
+    font-size: 1.0625rem;
+    font-weight: 400;
+    line-height: 1.75;
+
+    & :where(p, ul, ol, blockquote, pre, figure) {
+      margin-block: 0 1.25em;
+    }
+    & :where(h2) {
+      margin: 2.5em 0 0.75em;
+      font-size: 1.5rem;
+      font-weight: 700;
+      line-height: 1.3;
+    }
+    & :where(h3) {
+      margin: 2em 0 0.5em;
+      font-size: 1.25rem;
+      line-height: 1.35;
+    }
+    /* scene break */
+    & :where(hr) {
+      height: auto;
+      margin: 3em 0;
+      overflow: visible;
+      border: 0;
+      text-align: center;
+      line-height: 1;
+      &::after {
+        content: "⁂";
+        font-size: 1.5em;
+        color: var(--muted-foreground);
+      }
+    }
+    & :where(ol) {
+      list-style: decimal;
+      padding-left: 1.5em;
+    }
+    & :where(ul) {
+      list-style: disc;
+      padding-left: 1.5em;
+    }
+    & li::marker {
+      color: var(--muted-foreground);
+    }
+    & :where(li + li) {
+      margin-top: 0.5em;
+    }
+    & :where(a) {
+      overflow-wrap: anywhere;
+    }
+    & :where(blockquote) {
+      border-left: 3px solid var(--border);
+      padding-left: 1em;
+      font-style: italic;
+      color: var(--muted-foreground);
+    }
+    & :where(code) {
+      padding: 0.15em 0.35em;
+      border-radius: 0.25rem;
+      background: var(--accent);
+      font-size: 0.9em;
+    }
+    & :where(pre) {
+      padding: 1em;
+      overflow-x: auto;
+      border-radius: var(--radius);
+      background: var(--accent);
+      & code {
+        padding: 0;
+        background: none;
+      }
+    }
+    & :where(img) {
+      max-width: 100%;
+      height: auto;
+      margin-inline: auto;
+    }
+    & :where(sup) {
+      line-height: 0;
+    }
+    & :where(sup a) {
+      padding-inline: 0.1em;
+      color: var(--muted-foreground);
+      text-decoration: none;
+      &:hover {
+        color: var(--heading);
+      }
+    }
+
+    & :where(.footnotes) {
+      margin-top: 3em;
+      padding-top: 1.5em;
+      border-top: 1px solid var(--border);
+      font-size: 0.875rem;
+      line-height: 1.6;
+      color: var(--muted-foreground);
+      & h2 {
+        margin: 0 0 1em;
+        font-size: 1rem;
+      }
+      & li p {
+        display: inline;
+      }
+      & [data-footnote-backref] {
+        margin-left: 0.25em;
+        text-decoration: none;
+      }
+    }
+
+    /* where a footnote jump lands */
+    & :where(.footnotes li:target, [data-footnote-ref]:target) {
+      border-radius: 0.25rem;
+      background: var(--accent);
+    }
+    & :where([id^="footnote-"]) {
+      scroll-margin-top: 5rem;
+    }
+  }
 }
 
-header {
-	@apply fixed top-0 left-0 right-0 z-50 py-5;
-	@apply bg-stone-100/75 dark:bg-stone-900/25;
-	@apply backdrop-blur-sm saturate-200;
+@media (prefers-reduced-motion: no-preference) {
+  .prose :is(.footnotes li:target, [data-footnote-ref]:target) {
+    animation: footnote-flash 1.5s ease-out;
+  }
+  @keyframes footnote-flash {
+    from {
+      background: color-mix(in srgb, var(--heading) 12%, transparent);
+    }
+  }
 }
 
-main {
-	@apply flex-1 py-32;
+/* Unlayered so these beat the utility classes baked into the shadcn components. */
+[data-slot="card"] {
+  box-shadow: none;
+  border-radius: var(--radius);
+  gap: 0.75rem;
+  padding-block: 0.75rem;
+  transition: background-color 0.3s ease-in-out;
+}
+[data-slot="card"]:hover {
+  background: var(--accent);
+}
+[data-slot="card-header"],
+[data-slot="card-content"] {
+  padding-inline: 1rem;
+}
+[data-slot="card-title"] {
+  color: var(--heading);
+}
+[data-slot="card-title"] a {
+  text-decoration: none;
+}
+[data-slot="badge"] {
+  background: transparent;
+  border-color: var(--border);
+  color: var(--muted-foreground);
+  border-radius: 0.25rem;
+  font-weight: 400;
+}
+/* category icons are black <img> SVGs, so currentColor can't reach them */
+[data-slot="badge"] img {
+  opacity: 0.6;
+}
+.dark [data-slot="badge"] img {
+  filter: invert(1);
 }
 
-footer {
-	@apply py-5 text-sm;
+[data-slot="button"] {
+  box-shadow: none;
+  text-decoration: none;
 }
 
-/*
-article {
-  @apply max-w-full prose dark:prose-invert prose-img:mx-auto prose-img:my-auto;
-  @apply prose-headings:font-semibold prose-p:font-serif;
-  @apply prose-headings:text-black prose-headings:dark:text-white;
+/* cap gallery and card media so tall images and portrait videos stay on screen */
+:root {
+  --media-h: min(55vh, 28rem);
 }
-*/
-
-@layer utilities {
-	article a {
-		@apply font-sans text-current underline underline-offset-2;
-		@apply decoration-black/15 dark:decoration-white/30;
-		@apply transition-colors duration-300 ease-in-out;
-	}
-
-	article a:hover {
-		@apply text-black dark:text-white;
-		@apply decoration-black/25 dark:decoration-white/50;
-	}
+[data-slot="carousel-item"] img,
+[data-slot="card"] img:not([data-slot="badge"] img) {
+  width: 100%;
+  max-height: var(--media-h);
+  object-fit: contain;
 }
-
-.animate {
-	@apply opacity-0 translate-y-3;
-	@apply transition-all duration-700 ease-out;
+/* Gallery.tsx sets this track's height to the current slide */
+[data-slot="carousel-content"] > div {
+  align-items: flex-start;
+  transition: height 0.3s ease-in-out;
+}
+/* slides sit on the page background; a frame around a letterboxed image reads as empty space */
+[data-slot="carousel-item"] [data-slot="card"],
+[data-slot="carousel-item"] [data-slot="card-content"] {
+  border: 0;
+  padding: 0;
+  background: none;
 }
 
-.animate.show {
-	@apply opacity-100 translate-y-0;
+/* shadcn hangs the arrows outside the slide, which overflows narrow screens */
+@media (max-width: 767px) {
+  [data-slot="carousel-previous"] {
+    left: 0.5rem;
+  }
+  [data-slot="carousel-next"] {
+    right: 0.5rem;
+  }
 }
 
-html #back-to-top {
-	@apply opacity-0 pointer-events-none;
-}
-
-html.scrolled #back-to-top {
-	@apply opacity-100 pointer-events-auto;
-}

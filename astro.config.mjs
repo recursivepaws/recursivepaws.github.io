@@ -1,38 +1,47 @@
-import { defineConfig } from "astro/config";
-import mdx from "@astrojs/mdx";
-import sitemap from "@astrojs/sitemap";
-import tailwind from "@astrojs/tailwind";
+// Loading environment variables from .env files
+// https://docs.astro.build/en/guides/configuring-astro/#environment-variables
+import { loadEnv } from "vite";
 
-import remarkMath from 'remark-math';
-import rehypeKatex from 'rehype-katex';
-import { KatexOptions } from 'katex';
+const { PUBLIC_SANITY_PROJECT_ID, PUBLIC_SANITY_DATASET } = loadEnv(
+  import.meta.env.MODE,
+  process.cwd(),
+  "",
+);
+
+import react from "@astrojs/react";
+import vercel from "@astrojs/vercel";
+import sanity from "@sanity/astro";
+import { defineConfig } from "astro/config";
+
+import tailwindcss from "@tailwindcss/vite";
 
 // https://astro.build/config
 export default defineConfig({
-	site: "https://vera.lgbt",
-	integrations: [mdx(), sitemap(), tailwind()],
-	markdown: {
-		remarkPlugins: [remarkMath],
-		rehypePlugins: [
-			[rehypeKatex, {
-				macros: {
-					"\\RR": "\\mathbb{R}",
-					"\\ZZ": "\\mathbb{Z}",
-					"\\CC": "\\mathbb{C}",
-					"\\QQ": "\\mathbb{Q}",
-					"\\NN": "\\mathbb{N}",
-					"\\FF": "\\mathbb{F}",
-					"\\FF": "\\mathbb{F}",
-					"\\B": "\\boldsymbol{#1}",
-					"\\b": "\\mathbf{#1}",
-					"\\id": "\\htmlId{eq:#1}{#2}",
-					"\\t": "\\htmlId{eq:#1}{#2} \\tag{#1}",
-					"\\while": "\\rm{\\bold{while}} \\space #1 \\space \\rm{\\bold{do}}",
-					"\\algorithm": "\\hline \\rm{\\bold{Algorithm\\>#1}\\>#2}\\\\ \\hline "
-				},
-				trust: true,
-				leqno: true,
-			}]
-		]
-	}
+  output: "server",
+  srcDir: "./src/astro",
+  integrations: [
+    sanity({
+      projectId: PUBLIC_SANITY_PROJECT_ID,
+      dataset: PUBLIC_SANITY_DATASET,
+      useCdn: false,
+      apiVersion: "2025-10-20", // Set to date of setup to use the latest API version
+      studioBasePath: "/admin",
+      stega: {
+        studioUrl: "/admin",
+      },
+    }),
+    react({
+      experimentalReactChildren: true,
+    }), // Required for Sanity Studio
+  ],
+
+  adapter: vercel({
+    runtime: "nodejs20.x",
+  }),
+
+  vite: {
+    plugins: [tailwindcss()],
+  },
 });
+
+
