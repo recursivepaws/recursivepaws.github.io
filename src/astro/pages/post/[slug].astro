@@ -6,6 +6,7 @@ import { getPost, getPosts } from "../../utils/sanity";
 import { Marked } from "marked";
 import markedFootnote from "marked-footnote";
 import { Gallery } from "../../components/Gallery";
+import { LinkButtons } from "../../components/LinkButtons";
 
 export async function getStaticPaths() {
   const posts = await getPosts();
@@ -24,14 +25,6 @@ const md = new Marked().use(
   markedFootnote({ description: "Sources", headingClass: "" }),
 );
 const htmlContent = md.parse(post.body ?? "");
-
-// "…?dl=Name.pdf" links get their file name, anything else its hostname
-// Studio lets empty/invalid entries through (two posts have ""), so skip them
-const links = (post.links ?? []).filter((href) => URL.canParse(href)).map((href) => {
-  const url = new URL(href);
-  const file = url.searchParams.get("dl");
-  return { href, label: file ? `Download ${file}` : url.hostname };
-});
 ---
 
 <Layout
@@ -44,17 +37,6 @@ const links = (post.links ?? []).filter((href) => URL.canParse(href)).map((href)
       <h1 class="post__title">{post.title}</h1>
       {post.excerpt && <p class="post__excerpt">{post.excerpt}</p>}
       <p class="post__date">{formatDate(post.date)}</p>
-      {
-        links.length > 0 && (
-          <ul class="post__links">
-            {links.map((l) => (
-              <li>
-                <a href={l.href}>{l.label}</a>
-              </li>
-            ))}
-          </ul>
-        )
-      }
     </header>
     {
       post.gallery && (
@@ -63,6 +45,7 @@ const links = (post.links ?? []).filter((href) => URL.canParse(href)).map((href)
         </div>
       )
     }
+    <LinkButtons links={post.links ?? []} />
     <div class="post__body prose" set:html={htmlContent} />
   </article>
 
@@ -96,14 +79,6 @@ const links = (post.links ?? []).filter((href) => URL.canParse(href)).map((href)
       width: 100%;
       max-height: var(--media-h);
       object-fit: contain;
-    }
-
-    .post__links {
-      display: flex;
-      flex-wrap: wrap;
-      gap: 0.25rem 1rem;
-      margin-top: 0.75rem;
-      font-size: 0.875rem;
     }
 
     @media (min-width: 768px) {

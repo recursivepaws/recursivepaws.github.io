@@ -340,6 +340,7 @@
 
 [data-slot="button"] {
   box-shadow: none;
+  text-decoration: none;
 }
 
 /* cap gallery and card media so tall images and portrait videos stay on screen */
