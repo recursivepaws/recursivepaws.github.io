@@ -209,8 +209,7 @@
   box-shadow: none;
 }
 
-/* one media height for gallery slides and card previews, so carousels don't
-   size to their tallest slide */
+/* cap gallery and card media so tall images and portrait videos stay on screen */
 :root {
   --media-h: min(55vh, 28rem);
 }
@@ -220,11 +219,10 @@
   max-height: var(--media-h);
   object-fit: contain;
 }
-[data-slot="carousel-item"] img {
-  height: var(--media-h);
-}
+/* Gallery.tsx sets this track's height to the current slide */
 [data-slot="carousel-content"] > div {
-  align-items: center;
+  align-items: flex-start;
+  transition: height 0.3s ease-in-out;
 }
 /* slides sit on the page background; a frame around a letterboxed image reads as empty space */
 [data-slot="carousel-item"] [data-slot="card"],
