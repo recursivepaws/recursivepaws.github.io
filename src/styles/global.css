@@ -3,7 +3,41 @@
 
 @custom-variant dark (&:is(.dark *));
 
+@font-face {
+  font-family: "FiraCode";
+  src: url("/fonts/FiraCodeNerdFont-Light.ttf") format("truetype");
+  font-weight: 300;
+  font-display: swap;
+}
+@font-face {
+  font-family: "FiraCode";
+  src: url("/fonts/FiraCodeNerdFont-Retina.ttf") format("truetype");
+  font-weight: 400;
+  font-display: swap;
+}
+@font-face {
+  font-family: "FiraCode";
+  src: url("/fonts/FiraCodeNerdFont-Medium.ttf") format("truetype");
+  font-weight: 500;
+  font-display: swap;
+}
+@font-face {
+  font-family: "FiraCode";
+  src: url("/fonts/FiraCodeNerdFont-SemiBold.ttf") format("truetype");
+  font-weight: 600;
+  font-display: swap;
+}
+@font-face {
+  font-family: "FiraCode";
+  src: url("/fonts/FiraCodeNerdFont-Bold.ttf") format("truetype");
+  font-weight: 700;
+  font-display: swap;
+}
+
 @theme inline {
+  --font-sans: "FiraCode", ui-monospace, monospace;
+  --font-mono: "FiraCode", ui-monospace, monospace;
+  --color-heading: var(--heading);
   --radius-sm: calc(var(--radius) - 4px);
   --radius-md: calc(var(--radius) - 2px);
   --radius-lg: var(--radius);
@@ -42,25 +76,26 @@
 }
 
 :root {
-  --radius: 0.625rem;
-  --background: oklch(1 0 0);
-  --foreground: oklch(0.141 0.005 285.823);
-  --card: oklch(1 0 0);
-  --card-foreground: oklch(0.141 0.005 285.823);
-  --popover: oklch(1 0 0);
-  --popover-foreground: oklch(0.141 0.005 285.823);
-  --primary: oklch(0.21 0.006 285.885);
-  --primary-foreground: oklch(0.985 0 0);
-  --secondary: oklch(0.967 0.001 286.375);
-  --secondary-foreground: oklch(0.21 0.006 285.885);
-  --muted: oklch(0.967 0.001 286.375);
-  --muted-foreground: oklch(0.552 0.016 285.938);
-  --accent: oklch(0.967 0.001 286.375);
-  --accent-foreground: oklch(0.21 0.006 285.885);
+  --radius: 0.5rem;
+  --background: #f5f5f4;
+  --foreground: rgb(0 0 0 / 0.6);
+  --heading: #000;
+  --card: transparent;
+  --card-foreground: rgb(0 0 0 / 0.6);
+  --popover: #f5f5f4;
+  --popover-foreground: rgb(0 0 0 / 0.6);
+  --primary: #000;
+  --primary-foreground: #f5f5f4;
+  --secondary: rgb(0 0 0 / 0.05);
+  --secondary-foreground: #000;
+  --muted: rgb(0 0 0 / 0.05);
+  --muted-foreground: rgb(0 0 0 / 0.55);
+  --accent: rgb(0 0 0 / 0.05);
+  --accent-foreground: #000;
   --destructive: oklch(0.577 0.245 27.325);
-  --border: oklch(0.92 0.004 286.32);
-  --input: oklch(0.92 0.004 286.32);
-  --ring: oklch(0.705 0.015 286.067);
+  --border: rgb(0 0 0 / 0.15);
+  --input: rgb(0 0 0 / 0.15);
+  --ring: rgb(0 0 0 / 0.3);
   --chart-1: oklch(0.646 0.222 41.116);
   --chart-2: oklch(0.6 0.118 184.704);
   --chart-3: oklch(0.398 0.07 227.392);
@@ -77,24 +112,25 @@
 }
 
 .dark {
-  --background: oklch(0.141 0.005 285.823);
-  --foreground: oklch(0.985 0 0);
-  --card: oklch(0.21 0.006 285.885);
-  --card-foreground: oklch(0.985 0 0);
-  --popover: oklch(0.21 0.006 285.885);
-  --popover-foreground: oklch(0.985 0 0);
-  --primary: oklch(0.92 0.004 286.32);
-  --primary-foreground: oklch(0.21 0.006 285.885);
-  --secondary: oklch(0.274 0.006 286.033);
-  --secondary-foreground: oklch(0.985 0 0);
-  --muted: oklch(0.274 0.006 286.033);
-  --muted-foreground: oklch(0.705 0.015 286.067);
-  --accent: oklch(0.274 0.006 286.033);
-  --accent-foreground: oklch(0.985 0 0);
+  --background: #1c1917;
+  --foreground: rgb(255 255 255 / 0.75);
+  --heading: #fff;
+  --card: transparent;
+  --card-foreground: rgb(255 255 255 / 0.75);
+  --popover: #1c1917;
+  --popover-foreground: rgb(255 255 255 / 0.75);
+  --primary: #fff;
+  --primary-foreground: #1c1917;
+  --secondary: rgb(255 255 255 / 0.05);
+  --secondary-foreground: #fff;
+  --muted: rgb(255 255 255 / 0.05);
+  --muted-foreground: rgb(255 255 255 / 0.6);
+  --accent: rgb(255 255 255 / 0.05);
+  --accent-foreground: #fff;
   --destructive: oklch(0.704 0.191 22.216);
-  --border: oklch(1 0 0 / 10%);
-  --input: oklch(1 0 0 / 15%);
-  --ring: oklch(0.552 0.016 285.938);
+  --border: rgb(255 255 255 / 0.2);
+  --input: rgb(255 255 255 / 0.2);
+  --ring: rgb(255 255 255 / 0.4);
   --chart-1: oklch(0.488 0.243 264.376);
   --chart-2: oklch(0.696 0.17 162.48);
   --chart-3: oklch(0.769 0.188 70.08);
@@ -115,7 +151,104 @@
     @apply border-border outline-ring/50;
   }
   body {
-    @apply bg-background text-foreground;
+    @apply bg-background text-foreground font-light antialiased;
   }
+  h1,
+  h2,
+  h3,
+  h4,
+  h5,
+  h6 {
+    @apply font-semibold text-heading;
+  }
+  a {
+    @apply underline underline-offset-2 decoration-foreground/30 transition-colors duration-300;
+  }
+  a:hover {
+    @apply text-heading decoration-heading/50;
+  }
+}
+
+/* Unlayered so these beat the utility classes baked into the shadcn components. */
+[data-slot="card"] {
+  box-shadow: none;
+  border-radius: var(--radius);
+  gap: 0.75rem;
+  padding-block: 0.75rem;
+  transition: background-color 0.3s ease-in-out;
+}
+[data-slot="card"]:hover {
+  background: var(--accent);
+}
+[data-slot="card-header"],
+[data-slot="card-content"] {
+  padding-inline: 1rem;
+}
+[data-slot="card-title"] {
+  color: var(--heading);
+}
+/* mono is wider than Inter: let badges wrap instead of crushing the title */
+[data-slot="card-action"] {
+  max-width: 50%;
+  flex-wrap: wrap;
+  justify-content: flex-end;
+}
+[data-slot="card-title"] a {
+  text-decoration: none;
+}
+
+[data-slot="tabs-list"] {
+  background: none;
+  padding: 0;
+  height: auto;
+  flex-wrap: wrap;
+  justify-content: flex-start;
+  gap: 0.25rem 0;
+}
+[data-slot="tabs-trigger"] {
+  display: inline;
+  flex: none;
+  height: auto;
+  padding: 0;
+  border: 0;
+  background: none;
+  box-shadow: none;
+  font-weight: 300;
+  color: var(--muted-foreground);
+  text-decoration: underline;
+  text-underline-offset: 2px;
+  text-decoration-color: color-mix(in srgb, currentColor 30%, transparent);
+  transition: color 0.3s ease-in-out;
+}
+[data-slot="tabs-trigger"]:hover,
+[data-slot="tabs-trigger"][data-state="active"] {
+  color: var(--heading);
+  text-decoration-color: currentColor;
+}
+/* inline-block keeps the trigger's underline off the separator */
+[data-slot="tabs-trigger"] + [data-slot="tabs-trigger"]::before {
+  content: "/";
+  display: inline-block;
+  margin: 0 0.5rem;
+  color: var(--foreground);
+}
+
+[data-slot="badge"] {
+  background: transparent;
+  border-color: var(--border);
+  color: var(--muted-foreground);
+  border-radius: 0.25rem;
+  font-weight: 400;
+}
+/* category icons are black <img> SVGs, so currentColor can't reach them */
+[data-slot="badge"] img {
+  opacity: 0.6;
+}
+.dark [data-slot="badge"] img {
+  filter: invert(1);
+}
+
+[data-slot="button"] {
+  box-shadow: none;
 }
 

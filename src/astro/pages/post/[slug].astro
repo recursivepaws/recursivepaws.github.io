@@ -67,14 +67,9 @@ const htmlContent = marked.parse(post.body ?? "");
 
         /* Targeting tags in PortableText */
         & blockquote {
-          border-left: 5px solid var(--black);
+          border-left: 5px solid var(--border);
           padding-left: var(--space-3);
           margin-left: var(--space-4);
-        }
-
-        & a {
-          color: var(--blue-600);
-          text-decoration: none;
         }
       }
 
@@ -83,7 +78,7 @@ const htmlContent = marked.parse(post.body ?? "");
         font-size: var(--font-size-7);
         line-height: var(--line-height-6);
         margin: var(--space-4) 0;
-        font-weight: 800;
+        font-weight: 700;
       }
 
       & .post__excerpt {
@@ -91,12 +86,14 @@ const htmlContent = marked.parse(post.body ?? "");
         font-size: var(--font-size-5);
         line-height: var(--line-height-4);
         margin-top: 0;
-        font-weight: 400;
+        font-weight: 300;
+        color: var(--muted-foreground);
       }
 
       & .post__date {
         font-family: var(--font-family-sans);
-        font-weight: 600;
+        font-weight: 400;
+        color: var(--muted-foreground);
         font-size: var(--font-size-1);
         line-height: var(--line-height-1);
         margin-top: var(--space-4);
