@@ -32,6 +32,8 @@ export function Gallery({ gallery }: { gallery: SanityGallery }) {
     };
   }, [api]);
 
+  if (gallery.length === 1) return <GalleryItem item={gallery[0]} />;
+
   return (
     <Carousel className="w-full max-w-m" setApi={setApi}>
       <CarouselContent>

@@ -3,5 +3,7 @@ export function formatDate(date: string) {
     month: "long",
     day: "numeric",
     year: "numeric",
+    // Sanity dates are plain dates; local time would shift them back a day
+    timeZone: "UTC",
   });
 }

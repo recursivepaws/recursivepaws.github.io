@@ -127,6 +127,7 @@ export interface Post {
   tags: Reference[];
   icon?: Icon;
   featured?: boolean;
+  links?: string[];
   gallery?: Gallery;
   date: string;
   title?: string;

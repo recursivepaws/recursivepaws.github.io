@@ -39,6 +39,7 @@
     "lodash": "^4.17.21",
     "lucide-react": "^0.546.0",
     "marked": "^16.4.1",
+    "marked-footnote": "1.4.0",
     "react": "^19.2.0",
     "react-compiler-runtime": "^1.0.0",
     "react-dom": "^19.2.0",
