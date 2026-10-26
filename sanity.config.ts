@@ -10,8 +10,9 @@ import { schemaTypes } from "./src/sanity/schemaTypes";
 export default defineConfig({
   name: "recursivepaws",
   title: "Vera Gonzalez",
-  projectId: import.meta.env.PUBLIC_SANITY_PROJECT_ID,
-  dataset: import.meta.env.PUBLIC_SANITY_DATASET,
+  // sanity CLI only exposes SANITY_STUDIO_* env vars, so fall back for `sanity deploy`
+  projectId: import.meta.env.PUBLIC_SANITY_PROJECT_ID ?? "vhh501ab",
+  dataset: import.meta.env.PUBLIC_SANITY_DATASET ?? "production",
   plugins: [
     structureTool(),
     visionTool(),
@@ -21,7 +22,10 @@ export default defineConfig({
     }),
     presentationTool({
       resolve,
-      previewUrl: location.origin,
+      // hosted studio has no site at its own origin
+      previewUrl: location.hostname.endsWith(".sanity.studio")
+        ? "https://vera.lgbt"
+        : location.origin,
     }),
   ],
   schema: {

@@ -21,3 +21,5 @@ pnpm-debug.log*
 .astro/
 
 node_modules
+# direnv
+.direnv/
