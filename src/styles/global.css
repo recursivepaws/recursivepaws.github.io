@@ -248,6 +248,13 @@
       height: auto;
       margin-inline: auto;
     }
+    /* embeds pasted into posts carry fixed width attributes (e.g. figma's 800) */
+    & :where(video, embed) {
+      max-width: 100%;
+    }
+    & :where(iframe) {
+      width: 100%;
+    }
     & :where(sup) {
       line-height: 0;
     }
